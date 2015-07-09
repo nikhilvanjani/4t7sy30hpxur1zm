@@ -1,5 +1,5 @@
 from django import forms
-from .models import Query,Comment
+from .models import Query,Comment,Notification
 
 class QueryForm(forms.ModelForm):
 
@@ -13,3 +13,11 @@ class CommentForm(forms.ModelForm):
 	class Meta:
 		model = Comment
 		fields = ('name','body','pub_date')
+
+
+class NotificationForm(forms.ModelForm):
+
+	class Meta:
+		model = Notification
+		fields = ()
+

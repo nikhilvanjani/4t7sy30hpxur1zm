@@ -5,7 +5,9 @@
 {% block sidebar %}
 
 <ul>
-	<li><a href="/cbt/forum/home/create/"> Create Query </a></li>
+	<li><a href="/forum/home/create/"> Create Query </a></li>
+	<li><a href="/forum/home/notifications/">Notifications</a></li>
+	<li><a href="/forum/home/latest/">Latest Queries</a></li>
 </ul>
 
 <h3>Search</h3>

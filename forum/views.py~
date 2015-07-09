@@ -1,5 +1,5 @@
 from django.shortcuts import render,get_object_or_404
-from .forms import QueryForm,CommentForm
+from .forms import QueryForm,CommentForm,NotificationForm
 from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf
 from .models import *
@@ -33,7 +33,7 @@ def upvote(request,query_id, comment_id=0):
 		p.save()
 		return HttpResponseRedirect('/forum/home/queries/%s' % query_id)
 
-def downvote(request,query_id):
+def downvote(request,query_id,comment_id=0):
 	if(comment_id==0):	
 		p=get_object_or_404(Query,pk=query_id)
 		p.downvotes +=1
@@ -66,6 +66,7 @@ def create(request):
 def comment(request,query_id):
 	if request.POST:
 		form = CommentForm(request.POST)
+		form1 = NotificationForm(request.POST)
 		if form.is_valid():
 			#form.save()
 			name=form.cleaned_data['name']
@@ -73,14 +74,31 @@ def comment(request,query_id):
 			pub_date=form.cleaned_data['pub_date']
 			query=Query.objects.get(id=query_id)
 			done=Comment.objects.create(name=name,body=body,pub_date=pub_date,query=query)
+
+		if form1.is_valid():
+			name=form.cleaned_data['name']
+			query=Query.objects.get(id=query_id)
+			done=Notification.objects.create(name=name,query=query)
+	
 			return HttpResponseRedirect('/forum/home/queries/%s' % query_id)
 	else:
 		form = CommentForm()
+		form1 = NotificationForm()
 	args = {}
 	args['form'] = form
 	args['query'] = Query.objects.get(id=query_id)
 	return render(request, '/home/nikhil/Desktop/CCBT/ccbt/forum/templates/comment.html',args)
 
+def notifications(request):
+	args = {}
+	args['notifications']= Notification.objects.all()
+
+	return render(request, '/home/nikhil/Desktop/CCBT/ccbt/forum/templates/notifications.html',args)
+
+def latest(request):
+	latest_query_list = Query.objects.order_by('-pub_date')[:5]
+	context = {'latest_query_list': latest_query_list,}
+	return render(request,'/home/nikhil/Desktop/CCBT/ccbt/forum/templates/latest.html',context)
 
 """
 def search_titles(request):

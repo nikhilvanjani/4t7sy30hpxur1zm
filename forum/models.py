@@ -22,4 +22,9 @@ class Comment(models.Model):
 	pub_date = models.DateTimeField('date published')
 	query = models.ForeignKey(Query)
 	upvotes = models.IntegerField(default=0)
-	downvotes = models.IntegerField(default=0) 
+	downvotes = models.IntegerField(default=0)
+
+
+class Notification(models.Model):
+	name = models.CharField(max_length=200)
+	query = models.ForeignKey(Query) 

@@ -12,4 +12,12 @@ class CommentForm(forms.ModelForm):
 	
 	class Meta:
 		model = Comment
-		fields = ('name','body')
+		fields = ('name','body','pub_date')
+
+
+class NotificationForm(forms.ModelForm):
+
+	class Meta:
+		model = Notification
+		fields = ()
+
